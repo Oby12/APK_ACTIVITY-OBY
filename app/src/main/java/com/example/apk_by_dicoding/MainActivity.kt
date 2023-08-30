@@ -7,7 +7,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 
-class MainActivity : AppCompatActivity(), View.OnClickListener {
+class MainActivity : AppCompatActivity() {
     private lateinit var edtWidth: EditText
     private lateinit var edtHeight: EditText
     private lateinit var edtLength: EditText
@@ -15,25 +15,42 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var tvResult: TextView
 
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
+    private  fun InitComponents(){
         edtWidth = findViewById(R.id.edt_width)
         edtHeight = findViewById(R.id.edt_height)
         edtLength = findViewById(R.id.edt_length)
         btnCalculate = findViewById(R.id.btn_calculate)
         tvResult = findViewById(R.id.tv_result)
-        btnCalculate.setOnClickListener(this)
     }
 
-    override fun onClick(p0: View?) {
-        if (View?.id == R.id.btn_calculate) {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        InitComponents()
+
+        btnCalculate.setOnClickListener {
             val inputLength = edtLength.text.toString().trim()
             val inputWidth = edtWidth.text.toString().trim()
             val inputHeight = edtHeight.text.toString().trim()
-            val volume = inputLength.toDouble() * inputWidth.toDouble() * inputHeight.toDouble()
-            tvResult.text = volume.toString()
+            var IsEmptyFields = false
+            if (inputLength.isEmpty()){
+                IsEmptyFields = true
+                edtLength.error = "please fill this length"
+            }
+            if (inputWidth.isEmpty()){
+                IsEmptyFields = true
+                edtWidth.error = "please fill this Width"
+            }
+            if (inputHeight.isEmpty()){
+                IsEmptyFields = true
+                edtHeight.error = "please fill this heigh"
+            }
+            if(!IsEmptyFields) {
+                val volume = inputLength.toDouble() * inputWidth.toDouble() * inputHeight.toDouble()
+                tvResult.text = volume.toString()
+            }
         }
     }
 }
+
